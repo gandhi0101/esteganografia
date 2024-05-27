@@ -9,6 +9,10 @@ class Main:
     def __init__(self):
         self.menu()
 
+    """encode_message_eof
+        
+        A) Y B)
+        """
     def encode_message_eof(self, file_path, message, output_path):
         with open(file_path, 'rb') as file:
             content = file.read()
@@ -21,6 +25,11 @@ class Main:
             file.write(encoded_content)
         print(f'Mensaje oculto en {output_path}')
 
+
+        """ decode_message_eof
+        B)
+        """
+        
     def decode_message_eof(self, file_path):
         with open(file_path, 'rb') as file:
             content = file.read()
@@ -34,7 +43,10 @@ class Main:
         message_bytes = content[eof_index + len(eof_marker):]
         message = message_bytes.decode('utf-8')
         return message
+    """menu()
+    D)
 
+    """
     def menu(self):
         while True:
             print("\n--- Menú ---")
@@ -58,5 +70,9 @@ class Main:
             else:
                 print("Opción no válida, por favor intenta de nuevo.")
 
+""" 
+E)
+
+"""
 if __name__ == '__main__':
     Main()
