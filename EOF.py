@@ -43,6 +43,25 @@ class Main:
         message_bytes = content[eof_index + len(eof_marker):]
         message = message_bytes.decode('utf-8')
         return message
+    
+
+    def clean_message_eof(self, file_path, output_path):
+            with open(file_path, 'rb') as file:
+                content = file.read()  # Abrimos el archivo y cargamos el contenido
+
+            eof_marker = b'EOFEOFEOF'
+            eof_index = content.find(eof_marker)
+            if eof_index == -1:
+                print("No se encontró un mensaje oculto.")  # Si no se encuentra la etiqueta, no hay mensaje oculto
+                return False
+
+            cleaned_content = content[:eof_index]  # Eliminar el mensaje y el marcador EOF
+
+            with open(output_path, 'wb') as file:
+                file.write(cleaned_content)  # Guardamos el archivo sin el mensaje oculto
+            print(f'Mensaje oculto eliminado en {output_path}')
+            return True
+        
     """menu()
     D)
 
@@ -60,10 +79,18 @@ class Main:
                 message = input("Introduce el mensaje a ocultar: ")
                 output_path = input("Introduce la ruta del archivo de salida: ")
                 self.encode_message_eof(file_path, message, output_path)
+                
             elif opcion == '2':
                 file_path = input("Introduce la ruta del archivo con el mensaje oculto: ")
                 mensaje_oculto = self.decode_message_eof(file_path)
                 print(f'Mensaje oculto: {mensaje_oculto}')
+
+                if mensaje_oculto:
+                    eliminar = input("¿Deseas eliminar el mensaje oculto del archivo? (s/n): ")
+                    if eliminar.lower() == 's':
+                        output_path = input("Introduce la ruta del archivo de salida sin el mensaje oculto: ")
+                        self.clean_message_eof(file_path, output_path)
+
             elif opcion == '3':
                 print("Saliendo...")
                 break
